@@ -10,8 +10,10 @@ import pickle
 import os
 import glob
 
+from typing import List, Tuple
 
-def review_to_words(review):
+
+def review_to_words(review) -> List[str]:
     nltk.download("stopwords", quiet=True)
     stemmer = PorterStemmer()
 
@@ -19,12 +21,12 @@ def review_to_words(review):
     text = re.sub(r"[^a-zA-Z0-9]", " ", text.lower())  # Convert to lower case
     words = text.split()  # Split string into words
     words = [w for w in words if w not in stopwords.words("english")]  # Remove stopwords
-    words = [PorterStemmer().stem(w) for w in words]  # stem
+    words = [stemmer.stem(w) for w in words]  # stem
 
     return words
 
 
-def convert_and_pad(word_dict, sentence, pad=500):
+def convert_and_pad(word_dict, sentence, pad=500) -> Tuple[List[str], int]:
     NOWORD = 0  # We will use 0 to represent the 'no word' category
     INFREQ = 1  # and we use 1 to represent the infrequent words, i.e., words not appearing in word_dict
 

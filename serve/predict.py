@@ -74,6 +74,8 @@ def predict_fn(input_data, model):
     #         data_X   - A sequence of length 500 which represents the converted review
     #         data_len - The length of the review
 
+    input_words = review_to_words(input_data)
+
     data_X = None
     data_len = None
 
@@ -91,6 +93,7 @@ def predict_fn(input_data, model):
     # TODO: Compute the result of applying the model to the input data. The variable `result` should
     #       be a numpy array which contains a single integer which is either 1 or 0
 
-    result = None
+    y_hat = model.predict(data)
+    result = int(round(y_hat, 0))
 
     return result

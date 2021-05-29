@@ -70,7 +70,27 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     """
 
     # TODO: Paste the train() method developed in the notebook here.
+    model.train()
+    for batch_idx, (data, target) in enumerate(train_loader):
+        data, target = data.to(device), target.to(device)
+        optimizer.zero_grad()
+        output = model(data)
+        loss = loss_fn(output, target)
+        loss.backward()
+        optimizer.step()
 
+        if batch_idx % args.log_interval == 0 and args.rank == 0:
+            print(
+                "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
+                    epoch,
+                    batch_idx * len(data) * args.world_size,
+                    len(train_loader.dataset),
+                    100.0 * batch_idx / len(train_loader),
+                    loss.item(),
+                )
+            )
+        if args.verbose:
+            print("Batch", batch_idx, "from rank", args.rank)
     pass
 
 
