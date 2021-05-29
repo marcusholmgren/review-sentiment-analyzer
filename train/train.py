@@ -2,8 +2,6 @@ import argparse
 import json
 import os
 import pickle
-import sys
-import sagemaker_containers
 import pandas as pd
 import torch
 import torch.optim as optim
@@ -70,28 +68,24 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     """
 
     # TODO: Paste the train() method developed in the notebook here.
-    model.train()
-    for batch_idx, (data, target) in enumerate(train_loader):
-        data, target = data.to(device), target.to(device)
-        optimizer.zero_grad()
-        output = model(data)
-        loss = loss_fn(output, target)
-        loss.backward()
-        optimizer.step()
+    for epoch in range(1, epochs + 1):
+        model.train()
+        total_loss = 0
+        for batch in train_loader:
+            batch_X, batch_y = batch
 
-        if batch_idx % args.log_interval == 0 and args.rank == 0:
-            print(
-                "Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}".format(
-                    epoch,
-                    batch_idx * len(data) * args.world_size,
-                    len(train_loader.dataset),
-                    100.0 * batch_idx / len(train_loader),
-                    loss.item(),
-                )
-            )
-        if args.verbose:
-            print("Batch", batch_idx, "from rank", args.rank)
-    pass
+            batch_X = batch_X.to(device)
+            batch_y = batch_y.to(device)
+
+            # TODO: Complete this train method to train the model provided.
+            optimizer.zero_grad()
+            predictions = model(batch_X)
+            loss = loss_fn(predictions, batch_y)
+            loss.backward()
+            optimizer.step()
+
+            total_loss += loss.data.item()
+        print("Epoch: {}, BCELoss: {}".format(epoch, total_loss / len(train_loader)))
 
 
 if __name__ == '__main__':

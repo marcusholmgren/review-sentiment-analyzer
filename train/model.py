@@ -17,8 +17,6 @@ class LSTMClassifier(nn.Module):
         self.dense = nn.Linear(in_features=hidden_dim, out_features=1)
         self.sigmoid = nn.Sigmoid()
 
-        self.word_dict = None
-
     def forward(self, x):
         """
         Perform a forward pass of our model on some input.
