@@ -1,0 +1,4 @@
+POST https://ci7r26lg24.execute-api.us-east-1.amazonaws.com/review
+Content-Type: application/json
+
+{ "review":  "This was a total wast of my time. No plot or anything!"}

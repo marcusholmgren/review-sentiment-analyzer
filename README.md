@@ -10,6 +10,7 @@ This is a mono repository with three parts
 - [SageMaker Project.ipynb](./SageMaker%20Project.ipynb) Jupyter notebook with preprocessing and training code for sentiment model.
 - train - model training code
 - serve - deployment model endpoint code.
+- lambda - lambda function for REST API against SageMaker endpoint.
 - [frontend](./frontend/README.md) web app for interacting with the API.
 
 ## Tech Stack
