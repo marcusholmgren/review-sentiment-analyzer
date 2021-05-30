@@ -7,7 +7,7 @@ Training of model is done with AWS [SageMaker](https://aws.amazon.com/sagemaker/
 
 This is a mono repository with three parts
 
-- [SageMaker Project.ipynb](./SageMaker Project.ipynb) Jupyter notebook with preprocessing and training code for sentiment model.
+- [SageMaker Project.ipynb](./SageMaker%20Project.ipynb) Jupyter notebook with preprocessing and training code for sentiment model.
 - train - model training code
 - serve - deployment model endpoint code.
 - [frontend](./frontend/README.md) web app for interacting with the API.
