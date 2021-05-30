@@ -1,14 +1,14 @@
-import argparse
+# import argparse
 import json
 import os
 import pickle
-import sys
-import sagemaker_containers
-import pandas as pd
+# import sys
+# import sagemaker_containers
+# import pandas as pd
 import numpy as np
 import torch
-import torch.nn as nn
-import torch.optim as optim
+# import torch.nn as nn
+# import torch.optim as optim
 import torch.utils.data
 
 from model import LSTMClassifier
@@ -49,16 +49,21 @@ def model_fn(model_dir):
 
 
 def input_fn(serialized_input_data, content_type):
-    print('Deserializing the input data.')
+    print(f'Deserializing the input data. Content-Type: {content_type}')
     if content_type == 'text/plain':
         data = serialized_input_data.decode('utf-8')
+        return data
+    elif content_type == "application/json":
+        data = json.loads(serialized_input_data)
         return data
     raise Exception('Requested unsupported ContentType in content_type: ' + content_type)
 
 
 def output_fn(prediction_output, accept):
     print('Serializing the generated output.')
-    return str(prediction_output)
+    if accept == 'text/plain':
+        return str(prediction_output)
+    return json.dumps({"prediction": prediction_output})
 
 
 def predict_fn(input_data, model):
@@ -73,11 +78,8 @@ def predict_fn(input_data, model):
     #       You should produce two variables:
     #         data_X   - A sequence of length 500 which represents the converted review
     #         data_len - The length of the review
-
     input_words = review_to_words(input_data)
-
-    data_X = None
-    data_len = None
+    data_X, data_len = convert_and_pad(model.word_dict, input_words)
 
     # Using data_X and data_len we construct an appropriate input tensor. Remember
     # that our model expects input data of the form 'len, review[500]'.
@@ -92,8 +94,7 @@ def predict_fn(input_data, model):
 
     # TODO: Compute the result of applying the model to the input data. The variable `result` should
     #       be a numpy array which contains a single integer which is either 1 or 0
-
-    y_hat = model.predict(data)
-    result = int(round(y_hat, 0))
+    y_hat = model.forward(data)
+    result = int(np.round(y_hat.detach().numpy()))
 
     return result
