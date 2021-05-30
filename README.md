@@ -18,5 +18,11 @@ This is a mono repository with three parts
 
 **Server:** Python, AWS Lambda, AWS SageMaker, PyTorch, Jupyter, Pandas
 
+
+## Resources
+
+- Udactiy [Machine Learning Engineer](https://www.udacity.com/course/machine-learning-engineer-nanodegree--nd009t)
+- [Connecting a web app to your PyTorch model using Amazon SageMaker](https://developers.facebook.com/blog/post/2020/08/03/connecting-web-app-pytorch-model-using-amazon-sagemaker/)
+
 ## License
 [MIT](./LICENSE)
